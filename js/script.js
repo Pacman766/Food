@@ -1,4 +1,5 @@
 window.addEventListener('DOMContentLoaded', () => {
+  
   // Tabs
 
   const tabs = document.querySelectorAll('.tabheader__item'), // табы
