@@ -1,5 +1,4 @@
 window.addEventListener('DOMContentLoaded', () => {
-  
   // Tabs
 
   const tabs = document.querySelectorAll('.tabheader__item'), // табы
@@ -47,7 +46,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Timer
 
-  const deadline = '2021-11-11';
+  const deadline = '2021-12-31';
 
   // Вычисляем оставшееся время с помощью вычитания из конечной даты
   // текущей даты, а также конвертируем миллисекунды в соотв единицы времени.
@@ -119,7 +118,7 @@ window.addEventListener('DOMContentLoaded', () => {
     modal.classList.add('show');
     modal.classList.remove('hide');
     document.body.style.overflow = 'hidden';
-    clearInterval(modalTimerId);
+    // clearInterval(modalTimerId);
   }
 
   // Вешаем обработчик событий на все кнопки modalBtn
@@ -137,7 +136,7 @@ window.addEventListener('DOMContentLoaded', () => {
   // закрытие при нажатии на крестик
   modalCloseBtn.addEventListener('click', closeModal);
 
-  // обработчик события для закрытия окна на крестик
+  // обработчик события для закрытия окна при нажатии на пустую область экрана
   modal.addEventListener('click', (e) => {
     if (e.target === modal) {
       closeModal();
