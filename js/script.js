@@ -109,9 +109,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Modal
 
-  const modalBtn = document.querySelectorAll('[data-modal]'),
-    modal = document.querySelector('.modal'),
-    modalCloseBtn = document.querySelector('[data-close]');
+  const modalBtn = document.querySelectorAll('[data-modal]'), // кнопка открытия модал. окна
+    modal = document.querySelector('.modal'), // родитель модального окна
+    modalCloseBtn = document.querySelector('[data-close]'); // кнопка закрыть (крестик)
 
   // ф-ция открытия модального окна
   function openModal() {
