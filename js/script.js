@@ -59,11 +59,11 @@ window.addEventListener('DOMContentLoaded', () => {
       seconds = Math.floor((t / 1000) % 60);
 
     return {
-      'total': t,
-      'days': days,
-      'hours': hours,
-      'minutes': minutes,
-      'seconds': seconds,
+      total: t,
+      days: days,
+      hours: hours,
+      minutes: minutes,
+      seconds: seconds,
     };
   }
 
@@ -246,4 +246,46 @@ window.addEventListener('DOMContentLoaded', () => {
     21,
     '.menu .container'
   ).render();
+
+  // Forms (работа с сервером)
+
+  const forms = document.querySelectorAll('.form');
+
+  const message = {
+    loading: 'Загрузка',
+    success: 'Всё хорошо, мы скоро с вами свяжемся',
+    failure: 'Что-то пошло не так...',
+  };
+
+  forms.forEach((item) => {
+    postData(item);
+  });
+
+  function postData(form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault(); // откл дэфолтное поведение браузера
+
+      const statusMessage = document.createElement('.div');
+      statusMessage.classList.add('status');
+      statusMessage.textContent = message.loading;
+      form.append(statusMessage); // добавляем сообщение загрузки в конец формы
+
+      const request = new XMLHttpRequest(); // создаем запрос
+      request.open('POST', 'server.php'); // открываем запрос с сервером
+
+      request.setRequestHeader('content-type', 'multipart/form-data'); // формируем заголовок
+      const formData = new FormData(form); // формируем данные которые задал пол-тель
+
+      request.send(formData);
+
+      request.addEventListener('load', () => {
+        if (request.status === 200) {
+          console.log(request.response);
+          statusMessage.textContent = message.success;
+        } else {
+          statusMessage.textContent = message.failure;
+        }
+      });
+    });
+  }
 });
