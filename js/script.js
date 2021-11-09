@@ -257,6 +257,7 @@ window.addEventListener('DOMContentLoaded', () => {
     failure: 'Что-то пошло не так...',
   };
 
+  // на каждую форму подвязываем ф-цию postData
   forms.forEach((item) => {
     postData(item);
   });
@@ -291,8 +292,8 @@ window.addEventListener('DOMContentLoaded', () => {
         if (request.status === 200) {
           console.log(request.response);
           statusMessage.textContent = message.success;
-          form.reset();
-          setTimeout(() => {
+          form.reset(); // очищаем форму
+          setTimeout(() => { // таймаут на удаление сообщения
             statusMessage.remove();
           }, 2000);
         } else {
@@ -301,4 +302,6 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+
+
 });
