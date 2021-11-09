@@ -249,7 +249,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Forms (работа с сервером)
 
-  const forms = document.querySelectorAll('.form');
+  const forms = document.querySelectorAll('form');
 
   const message = {
     loading: 'Загрузка',
@@ -265,23 +265,36 @@ window.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', (e) => {
       e.preventDefault(); // откл дэфолтное поведение браузера
 
-      const statusMessage = document.createElement('.div');
+      const statusMessage = document.createElement('div');
       statusMessage.classList.add('status');
       statusMessage.textContent = message.loading;
-      form.append(statusMessage); // добавляем сообщение загрузки в конец формы
+      form.appendChild(statusMessage); // добавляем сообщение загрузки в конец формы
 
       const request = new XMLHttpRequest(); // создаем запрос
       request.open('POST', 'server.php'); // открываем запрос с сервером
 
-      request.setRequestHeader('content-type', 'multipart/form-data'); // формируем заголовок
+      request.setRequestHeader(
+        'Content-type',
+        'application/json; charset=utf-8'
+      ); // формируем заголовок
       const formData = new FormData(form); // формируем данные которые задал пол-тель
 
-      request.send(formData);
+      const object = {};
+      formData.forEach(function (value, key) {
+        object[key] = value;
+      });
+      const json = JSON.stringify(object);
+
+      request.send(json);
 
       request.addEventListener('load', () => {
         if (request.status === 200) {
           console.log(request.response);
           statusMessage.textContent = message.success;
+          form.reset();
+          setTimeout(() => {
+            statusMessage.remove();
+          }, 2000);
         } else {
           statusMessage.textContent = message.failure;
         }
@@ -289,4 +302,3 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
-sdfsdf;
