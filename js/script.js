@@ -133,6 +133,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // обработчик события для закрытия окна при нажатии на пустую область экрана
+  // или на крестик
   modal.addEventListener('click', (e) => {
     if (e.target === modal || e.target.getAttribute('data-close') == '') {
       closeModal();
@@ -247,7 +248,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const forms = document.querySelectorAll('form');
 
-  //
+  // сообщения завершения операции
   const message = {
     loading: 'img/form/spinner.svg',
     success: 'Всё хорошо, мы скоро с вами свяжемся',
@@ -259,18 +260,22 @@ window.addEventListener('DOMContentLoaded', () => {
     postData(item);
   });
 
+  // отправка данных пол-ля на сервер и ответ с сервера в виде 
+  // вспылвающего окна
   function postData(form) {
+    // 1)
     form.addEventListener('submit', (e) => {
       e.preventDefault(); // откл дэфолтное поведение браузера
 
-      const statusMessage = document.createElement('img'); // создаем img
-      statusMessage.src = message.loading; // подставляем путь для I
+      const statusMessage = document.createElement('img'); // создаем спинер
+      statusMessage.src = message.loading; // подставляем путь для спинера
       statusMessage.style.cssText = `
         display : block;
         margin: 0 auto;
       `; // устанавливаем img по центру
-      form.insertAdjacentElement('afterend', statusMessage); // добавляем сообщение загрузке снизу от формы
+      form.insertAdjacentElement('afterend', statusMessage); // добавляем спиннер снизу от формы
 
+      //2)
       const request = new XMLHttpRequest(); // создаем запрос
       request.open('POST', 'server.php'); // открываем запрос с сервером
 
@@ -283,12 +288,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
       const object = {};
       formData.forEach(function (value, key) {
-        object[key] = value;
+        object[key] = value; // переносим данные в объект
       });
       const json = JSON.stringify(object); // форматируем объект в JSON
 
       request.send(json); // отправляем запрос
 
+      //3)
+      // если запрос успешный, то выводим рез-т в консоль, отображаем окно
+      // об успешном завершении, обнуляем форму (для повторного ввода данных)
+      // удаляем спиннер. В противном случае выводим сообщение об ошибке
       request.addEventListener('load', () => {
         if (request.status === 200) {
           console.log(request.response);
@@ -306,7 +315,7 @@ window.addEventListener('DOMContentLoaded', () => {
     // находим класс modal__dialog
     const prevModalDialog = document.querySelector('.modal__dialog');
 
-    // скрываем nextModalDialog
+    // скрываем prevModalDialog
     prevModalDialog.classList.add('hide');
     openModal();
 
@@ -322,7 +331,7 @@ window.addEventListener('DOMContentLoaded', () => {
     `;
 
     // помещаем создаенное окно после основного класса modal
-    // устанавливаем таймаут на
+    // устанавливаем таймаут 
     document.querySelector('.modal').append(thanksModal);
     setTimeout(() => {
       thanksModal.remove();
