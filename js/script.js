@@ -260,7 +260,7 @@ window.addEventListener('DOMContentLoaded', () => {
     postData(item);
   });
 
-  // отправка данных пол-ля на сервер и ответ с сервера в виде 
+  // отправка данных пол-ля на сервер и ответ с сервера в виде
   // вспылвающего окна
   function postData(form) {
     // 1)
@@ -331,7 +331,7 @@ window.addEventListener('DOMContentLoaded', () => {
     `;
 
     // помещаем создаенное окно после основного класса modal
-    // устанавливаем таймаут 
+    // устанавливаем таймаут
     document.querySelector('.modal').append(thanksModal);
     setTimeout(() => {
       thanksModal.remove();
