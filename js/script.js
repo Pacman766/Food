@@ -275,39 +275,33 @@ window.addEventListener('DOMContentLoaded', () => {
       `; // устанавливаем img по центру
       form.insertAdjacentElement('afterend', statusMessage); // добавляем спиннер снизу от формы
 
-      //2)
-      const request = new XMLHttpRequest(); // создаем запрос
-      request.open('POST', 'server.php'); // открываем запрос с сервером
-
-      // формируем заголовок
-      request.setRequestHeader(
-        'Content-type',
-        'application/json; charset=utf-8'
-      );
       const formData = new FormData(form); // формируем данные которые задал пол-тель
 
       const object = {};
       formData.forEach(function (value, key) {
         object[key] = value; // переносим данные в объект
       });
-      const json = JSON.stringify(object); // форматируем объект в JSON
 
-      request.send(json); // отправляем запрос
-
-      //3)
-      // если запрос успешный, то выводим рез-т в консоль, отображаем окно
-      // об успешном завершении, обнуляем форму (для повторного ввода данных)
-      // удаляем спиннер. В противном случае выводим сообщение об ошибке
-      request.addEventListener('load', () => {
-        if (request.status === 200) {
-          console.log(request.response);
+      fetch('server.php', {
+        // куда
+        method: 'POST', // каким образом
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(object), // что именно
+      })
+        .then((data) => data.text()) // promise
+        .then((data) => {
+          console.log(data);
           showThanksModal(message.success);
-          form.reset(); // очищаем форму
           statusMessage.remove();
-        } else {
+        })
+        .catch(() => {
           showThanksModal(message.failure);
-        }
-      });
+        })
+        .finally(() => {
+          form.reset(); // очищаем форму
+        });
     });
   }
 
