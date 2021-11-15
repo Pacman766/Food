@@ -285,9 +285,9 @@ window.addEventListener('DOMContentLoaded', () => {
         // куда
         method: 'POST', // каким образом
         headers: {
-          'Content-type': 'application/json'
+          'Content-type': 'application/json',
         },
-        body: JSON.stringify(object) // что именно
+        body: JSON.stringify(object), // что именно
       })
         .then((data) => data.text()) // promise
         .then((data) => {
