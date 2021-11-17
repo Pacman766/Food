@@ -107,6 +107,47 @@ window.addEventListener('DOMContentLoaded', () => {
 
   setClock('.timer', deadline);
 
+  // Slider
+
+  let offsetSlider = 0;
+  const parentSlider = document.querySelector('.offer__slider-wrapper');
+
+  document
+    .querySelector('.offer__slider-next img')
+    .addEventListener('click', () => {
+      offsetSlider += 390;
+      if (offsetSlider > 1560) {
+        offsetSlider = 0;
+      }
+      parentSlider.style.up = -offsetSlider + 'px';
+    });
+
+  document
+    .querySelector('.offer__slider-prev img')
+    .addEventListener('click', () => {
+      offsetSlider -= 390;
+      if (offsetSlider < 0) {
+        offsetSlider = 1560;
+      }
+      parentSlider.style.up = -offsetSlider + 'px';
+    });
+
+  // document.querySelector('.offer__slider-next img').addEventListener('click', () => {
+  //   offsetSlider -= 390;
+  //   if(offsetSlider < 0) {
+  //     offsetSlider = 1560;
+  //   }
+  //   parentSlider.style.up = -offsetSlider + 'px';
+  // });
+
+  // document.querySelector('.offer__slider-next img').addEventListener('click', () => {
+  //   offsetSlider -= 390;
+  //   if(offsetSlider < 0) {
+  //     offsetSlider = 1560;
+  //   }
+  //   parentSlider.style.up = -offsetSlider + 'px';
+  // });
+
   // Modal
 
   const modalBtn = document.querySelectorAll('[data-modal]'), // кнопка открытия модал. окна
@@ -241,7 +282,6 @@ window.addEventListener('DOMContentLoaded', () => {
       ).render();
     });
   });
-
 
   // Forms (работа с сервером)
 
