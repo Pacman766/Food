@@ -227,7 +227,8 @@ window.addEventListener('DOMContentLoaded', () => {
     return await res.json();
   };
 
-  //
+  // делаем запрос на сервер, создаем объект с соответствущими каждому блоку параметрами и вызываем
+  // на нем метод render()
   getResource('http://localhost:3000/menu').then((data) => {
     data.forEach(({ img, altimg, title, descr, price }) => {
       new MenuCard(
@@ -240,8 +241,7 @@ window.addEventListener('DOMContentLoaded', () => {
       ).render();
     });
   });
-  // создаем объект с соответствущими каждому блоку параметрами и вызываем
-  // на нем метод render()
+
 
   // Forms (работа с сервером)
 
