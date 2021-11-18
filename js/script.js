@@ -109,44 +109,53 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Slider
 
-  let offsetSlider = 0;
-  const parentSlider = document.querySelector('.offer__slider-wrapper');
+  const slides = document.querySelectorAll('.offer__slide'), // картинки слайдов
+    next = document.querySelector('.offer__slider-next'), // стрелка вперед
+    prev = document.querySelector('.offer__slider-prev'), // стрелка назад
+    total = document.querySelector('#total'), // номер общая/всего
+    current = document.querySelector('#current'); // номер текущий
+  let slideIndex = 1; // 
 
-  document
-    .querySelector('.offer__slider-next img')
-    .addEventListener('click', () => {
-      offsetSlider += 390;
-      if (offsetSlider > 1560) {
-        offsetSlider = 0;
-      }
-      parentSlider.style.up = -offsetSlider + 'px';
-    });
+  showSlides(slideIndex);
 
-  document
-    .querySelector('.offer__slider-prev img')
-    .addEventListener('click', () => {
-      offsetSlider -= 390;
-      if (offsetSlider < 0) {
-        offsetSlider = 1560;
-      }
-      parentSlider.style.up = -offsetSlider + 'px';
-    });
+  // подставление 0 в total если цирфа <10
+  if (slides.length < 10) {
+    total.textContent = `0${slides.length}`;
+  } else {
+    total.textContent = slides.length;
+  }
 
-  // document.querySelector('.offer__slider-next img').addEventListener('click', () => {
-  //   offsetSlider -= 390;
-  //   if(offsetSlider < 0) {
-  //     offsetSlider = 1560;
-  //   }
-  //   parentSlider.style.up = -offsetSlider + 'px';
-  // });
+  function showSlides(n) {
+    if (n > slides.length) { // переключение с 04 на 01
+      slideIndex = 1;
+    }
+    if (n < 1) {
+      slideIndex = slides.length;
+    }
+    // скрыть все слайды
+    slides.forEach((item) => (item.style.display = 'none')); 
+    // отобразить 1й слайд
+    slides[slideIndex - 1].style.display = 'block';
 
-  // document.querySelector('.offer__slider-next img').addEventListener('click', () => {
-  //   offsetSlider -= 390;
-  //   if(offsetSlider < 0) {
-  //     offsetSlider = 1560;
-  //   }
-  //   parentSlider.style.up = -offsetSlider + 'px';
-  // });
+    // подставление 0 в current если цифра <10
+    if (slides.length < 10) { // 
+      current.textContent = `0${slideIndex}`;
+    } else {
+      current.textContent = slideIndex;
+    }
+  }
+  // изменение индекса
+  function plusSlides(n) {
+    showSlides(slideIndex += n);
+  }
+  
+  // обработчик событий на клик
+  prev.addEventListener('click', () => {
+    plusSlides(-1);
+  });
+  next.addEventListener('click', () => {
+    plusSlides(1);
+  });
 
   // Modal
 
