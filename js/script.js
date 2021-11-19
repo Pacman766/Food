@@ -112,50 +112,127 @@ window.addEventListener('DOMContentLoaded', () => {
   const slides = document.querySelectorAll('.offer__slide'), // картинки слайдов
     next = document.querySelector('.offer__slider-next'), // стрелка вперед
     prev = document.querySelector('.offer__slider-prev'), // стрелка назад
-    total = document.querySelector('#total'), // номер общая/всего
-    current = document.querySelector('#current'); // номер текущий
-  let slideIndex = 1; // 
+    total = document.querySelector('#total'), // номер общий/всего
+    current = document.querySelector('#current'), // номер текущий
+    slidesWrapper = document.querySelector('.offer__slider-wrapper'), // общая обертка
+    slidesField = document.querySelector('.offer__slider-inner'), // обертка слайдов
+    width = window.getComputedStyle(slidesWrapper).width; // ширина окошка  со слайдами (ширина 1 слайда)
 
-  showSlides(slideIndex);
+  let slideIndex = 1;
+  let offset = 0;
 
+  // инициализция начальных цифр в слайдера
   // подставление 0 в total если цирфа <10
   if (slides.length < 10) {
     total.textContent = `0${slides.length}`;
+    current.textContent = `0${slideIndex}`;
   } else {
     total.textContent = slides.length;
+    current.textContent = slideIndex;
   }
 
-  function showSlides(n) {
-    if (n > slides.length) { // переключение с 04 на 01
-      slideIndex = 1;
-    }
-    if (n < 1) {
-      slideIndex = slides.length;
-    }
-    // скрыть все слайды
-    slides.forEach((item) => (item.style.display = 'none')); 
-    // отобразить 1й слайд
-    slides[slideIndex - 1].style.display = 'block';
+  slidesField.style.width = 100 * slides.length + '%';
+  slidesField.style.display = 'flex';
+  slidesField.style.transition = '0.5s all';
+  slidesWrapper.style.overflow = 'hidden';
 
-    // подставление 0 в current если цифра <10
-    if (slides.length < 10) { // 
+  slides.forEach((slide) => {
+    slide.style.width = width;
+  });
+
+  next.addEventListener('click', () => {
+    // если слайд сдвинулся в конец то перемещаем в начало
+    if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
+      offset = 0;
+    } else {
+      // в противном случае просто двигаем слайд вперед
+      offset += +width.slice(0, width.length - 2);
+    }
+    // сдвигаем слайды
+    slidesField.style.transform = `translateX(-${offset}px)`;
+
+    // если слайдер дошел до конца то перемещаемся на 1
+    // в противном случае двигаемся вперед
+    if (slideIndex == slides.length) {
+      slideIndex = 1;
+    } else {
+      slideIndex++;
+    }
+
+    // подставляем ноль если кол-во слайдов <10
+    if (slides.length < 10) {
       current.textContent = `0${slideIndex}`;
     } else {
       current.textContent = slideIndex;
     }
-  }
-  // изменение индекса
-  function plusSlides(n) {
-    showSlides(slideIndex += n);
-  }
-  
-  // обработчик событий на клик
+  });
+
   prev.addEventListener('click', () => {
-    plusSlides(-1);
+    // если слайд на первой позиции и двигаем назад, то нас перекидывает на посл слайд
+    if (offset == 0) {
+      offset = +width.slice(0, width.length - 2) * (slides.length - 1);
+    } else {
+      // в противном случае просто двигаем слайд назад
+      offset -= +width.slice(0, width.length - 2);
+    }
+    // сдвигаем слайды
+    slidesField.style.transform = `translateX(-${offset}px)`;
+
+    // из 1й позиции переход на 4й слайд при обратном движении слайдов
+    if (slideIndex == 1) {
+      slideIndex = slides.length;
+    } else {
+      slideIndex--;
+    }
+
+    // подставляем ноль если кол-во слайдов <10
+    if (slides.length < 10) {
+      current.textContent = `0${slideIndex}`;
+    } else {
+      current.textContent = slideIndex;
+    }
   });
-  next.addEventListener('click', () => {
-    plusSlides(1);
-  });
+
+  // showSlides(slideIndex);
+
+  // // подставление 0 в total если цирфа <10
+  // if (slides.length < 10) {
+  //   total.textContent = `0${slides.length}`;
+  // } else {
+  //   total.textContent = slides.length;
+  // }
+
+  // function showSlides(n) {
+  //   if (n > slides.length) { // переключение с 04 на 01
+  //     slideIndex = 1;
+  //   }
+  //   if (n < 1) {
+  //     slideIndex = slides.length;
+  //   }
+  //   // скрыть все слайды
+  //   slides.forEach((item) => (item.style.display = 'none'));
+  //   // отобразить 1й слайд
+  //   slides[slideIndex - 1].style.display = 'block';
+
+  //   // подставление 0 в current если цифра <10
+  //   if (slides.length < 10) { //
+  //     current.textContent = `0${slideIndex}`;
+  //   } else {
+  //     current.textContent = slideIndex;
+  //   }
+  // }
+  // // изменение индекса
+  // function plusSlides(n) {
+  //   showSlides(slideIndex += n);
+  // }
+
+  // // обработчик событий на клик
+  // prev.addEventListener('click', () => {
+  //   plusSlides(-1);
+  // });
+  // next.addEventListener('click', () => {
+  //   plusSlides(1);
+  // });
 
   // Modal
 
