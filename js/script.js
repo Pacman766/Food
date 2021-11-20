@@ -142,12 +142,17 @@ window.addEventListener('DOMContentLoaded', () => {
     slide.style.width = width;
   });
 
+  // возиционируем основной род. эл-т, чтобы точки были всегда поверх
   slider.style.position = 'relative';
 
+  // создаем эл-т разметки ol, пустой массив для точек
+  // и создаем класс для indicators
   const indicators = document.createElement('ol'),
         dots = [];
   indicators.classList.add('carousel-indicators');
 
+  // прописываем стили для indicators и добавляем их 
+  // в конец эл-ьа slider
   indicators.style.cssText = `
     position: absolute;
     right: 0;
@@ -162,6 +167,9 @@ window.addEventListener('DOMContentLoaded', () => {
   `;
   slider.append(indicators);
 
+  // с помощью цикла пробегаемся по слайдам, создаем и устанавливаем
+  // точки в соответствии с каждым слайдом а также соответствующие атрибуты
+  // прописываем 
   for (let i = 0; i < slides.length; i++) {
     const dot = document.createElement('li');
     dot.setAttribute('data-slide-to', i + 1);
