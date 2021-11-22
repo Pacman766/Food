@@ -148,10 +148,10 @@ window.addEventListener('DOMContentLoaded', () => {
   // создаем эл-т разметки ol, пустой массив для точек
   // и создаем класс для indicators
   const indicators = document.createElement('ol'),
-        dots = [];
+    dots = [];
   indicators.classList.add('carousel-indicators');
 
-  // прописываем стили для indicators и добавляем их 
+  // прописываем стили для indicators и добавляем их
   // в конец эл-ьа slider
   indicators.style.cssText = `
     position: absolute;
@@ -169,7 +169,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // с помощью цикла пробегаемся по слайдам, создаем и устанавливаем
   // точки в соответствии с каждым слайдом а также соответствующие атрибуты
-  // прописываем data-slide-to атрибут с соответствеующим 
+  // прописываем data-slide-to атрибут с соответствеующим
   // значением, а также инлайн стили
   for (let i = 0; i < slides.length; i++) {
     const dot = document.createElement('li');
@@ -189,7 +189,7 @@ window.addEventListener('DOMContentLoaded', () => {
       opacity: .5;
       transition: opacity .6s ease;
     `;
-    // если мы на 1й итерации, то 
+    // если мы на 1й итерации, то
     // прозрачность ставим на 1 (по умолчанию 0.5)
     if (i == 0) {
       dot.style.opacity = 1;
@@ -200,19 +200,30 @@ window.addEventListener('DOMContentLoaded', () => {
     dots.push(dot);
   }
 
+  function onlyDigits(str) {
+    return +str.replace(/\D/g, '');
+  }
+
+  // сначала всему массиву устанавливаем прозрачность 0.5
+  // потом по очереди каждому dot уст. прозрачность 1
+  function dotsOpacity() {
+    dots.forEach((dots) => (dots.style.opacity = '0.5'));
+    dots[slideIndex - 1].style.opacity = 1;
+  }
+
   next.addEventListener('click', () => {
     // если слайд сдвинулся в конец то перемещаем в начало
-    if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
+    if (offset == onlyDigits(width) * (slides.length - 1)) {
       offset = 0;
     } else {
       // в противном случае просто двигаем слайд вперед
-      offset += +width.slice(0, width.length - 2);
+      offset += onlyDigits(width);
     }
     // сдвигаем слайды
     slidesField.style.transform = `translateX(-${offset}px)`;
 
-    // если номерация слайдов дошла до конца то перемещаемся на 1
-    // в противном случае двигаемся вперед
+    // если мы долистали слайды до конца, то переключаемся на 1й
+    // в противном случае листаем вперед
     if (slideIndex == slides.length) {
       slideIndex = 1;
     } else {
@@ -225,19 +236,17 @@ window.addEventListener('DOMContentLoaded', () => {
     } else {
       current.textContent = slideIndex;
     }
-    // сначала всему массву устанавливаем прозрачность 0.5
-    // потом по очереди каждому dot уст. прозрачность 1
-    dots.forEach(dots => dots.style.opacity = '0.5');
-    dots[slideIndex - 1].style.opacity = 1;
+
+    dotsOpacity();
   });
 
   prev.addEventListener('click', () => {
     // если слайд на первой позиции и двигаем назад, то нас перекидывает на посл слайд
     if (offset == 0) {
-      offset = +width.slice(0, width.length - 2) * (slides.length - 1);
+      offset = onlyDigits(width) * (slides.length - 1);
     } else {
       // в противном случае просто двигаем слайд назад
-      offset -= +width.slice(0, width.length - 2);
+      offset -= onlyDigits(width);
     }
     // сдвигаем слайды
     slidesField.style.transform = `translateX(-${offset}px)`;
@@ -256,21 +265,18 @@ window.addEventListener('DOMContentLoaded', () => {
       current.textContent = slideIndex;
     }
 
-    // сначала всему массву устанавливаем прозрачность 0.5
-    // потом по очереди каждому dot уст. прозрачность 1
-    dots.forEach(dots => dots.style.opacity = '0.5');
-    dots[slideIndex - 1].style.opacity = 1;
+    dotsOpacity();
   });
 
-  dots.forEach(dot => {
+  dots.forEach((dot) => {
     dot.addEventListener('click', (e) => {
       // находим элемент по которому был клик
       const slideTo = e.target.getAttribute('data-slide-to');
-      // сопоставляем цифры и точки
+      // сопоставляем номер слайда и точки
       slideIndex = slideTo;
 
       // смещение точек
-      offset = +width.slice(0, width.length - 2) * (slideTo - 1);
+      offset = onlyDigits(width) * (slideTo - 1);
       // смещение слайдера
       slidesField.style.transform = `translateX(-${offset}px)`;
 
@@ -281,11 +287,11 @@ window.addEventListener('DOMContentLoaded', () => {
         current.textContent = slideIndex;
       }
 
-      dots.forEach(dots => dots.style.opacity = '0.5');
-      dots[slideIndex - 1].style.opacity = 1;
+      dotsOpacity();
     });
   });
 
+  // простой слайдер (без переменных)
   // showSlides(slideIndex);
 
   // // подставление 0 в total если цирфа <10
@@ -559,4 +565,26 @@ window.addEventListener('DOMContentLoaded', () => {
       closeModal();
     }, 4000);
   }
+
+  // Calc
+
+  const result = document.querySelector('.calculating__result');
+  let sex, height, weight, age, ratio;
+
+  function calcTotal() {
+    if (!sex || !height || !weight || !age || !ratio) {
+      result.textContent = 'Введите все данные';
+      return;
+    }
+
+    if (result === 'female') {
+      result.textContent =
+        (447.6 + 9.2 * weight + 3.1 * height - 4.3 * age) * ratio;
+    } else {
+      result.textContent =
+        (88.36 + 13.4 * weight + 4.8 * height - 5.7 * age) * ratio;
+    }
+  }
+
+  calcTotal();
 });
