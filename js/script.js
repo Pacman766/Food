@@ -169,7 +169,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // с помощью цикла пробегаемся по слайдам, создаем и устанавливаем
   // точки в соответствии с каждым слайдом а также соответствующие атрибуты
-  // прописываем 
+  // прописываем data-slide-to атрибут с соответствеующим 
+  // значением, а также инлайн стили
   for (let i = 0; i < slides.length; i++) {
     const dot = document.createElement('li');
     dot.setAttribute('data-slide-to', i + 1);
@@ -188,9 +189,13 @@ window.addEventListener('DOMContentLoaded', () => {
       opacity: .5;
       transition: opacity .6s ease;
     `;
+    // если мы на 1й итерации, то 
+    // прозрачность ставим на 1 (по умолчанию 0.5)
     if (i == 0) {
       dot.style.opacity = 1;
     }
+    // вставляем точки в конец indicators(ol)
+    // вставляем точки в массив dots
     indicators.append(dot);
     dots.push(dot);
   }
