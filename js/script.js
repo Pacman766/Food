@@ -567,9 +567,13 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // Calculator
-  // При клике на мужчину результат не меняется исправить
 
   const result = document.querySelector('.calculating__result span');
+
+  if (localStorage.getItem('sex')) {
+    let sex
+  }
+
   let sex = 'female',
     height,
     weight,
@@ -582,7 +586,7 @@ window.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    if (result === 'female') {
+    if (sex === 'female') {
       result.textContent = Math.round(
         (447.6 + 9.2 * weight + 3.1 * height - 4.3 * age) * ratio
       );
@@ -605,8 +609,10 @@ window.addEventListener('DOMContentLoaded', () => {
         // то мы вытаскиваем эту активность
         if (e.target.getAttribute('data-ratio')) {
           ratio = e.target.getAttribute('data-ratio');
+          localStorage.setItem('ratio', e.target.getAttribute('data-ratio'));
         } else {
           sex = e.target.getAttribute('id');
+          localStorage.setItem('sex', e.target.getAttribute('id'));
         }
 
         // со всех эл-тов убираем класс активности и
@@ -635,6 +641,13 @@ window.addEventListener('DOMContentLoaded', () => {
     const input = document.querySelector(selector);
 
     input.addEventListener('input', () => {
+
+      if(input.value.match(/\D/g)) {
+        input.style.border = '1px solid red';
+      } else {
+        input.style.border = 'none';
+      }
+
       switch (input.getAttribute('id')) {
         case 'height':
           height = +input.value;
