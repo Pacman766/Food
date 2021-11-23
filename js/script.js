@@ -570,15 +570,38 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const result = document.querySelector('.calculating__result span');
 
-  if (localStorage.getItem('sex')) {
-    let sex
-  }
-
-  let sex = 'female',
+  let sex,
     height,
     weight,
     age,
     ratio = 1.375;
+
+  // устанавливаем значение по умолчанию в пол
+  if (localStorage.getItem('sex')) {
+    sex = localStorage.getItem('sex');
+  } else {
+    sex = 'female';
+    localStorage.setItem('sex', 'female');
+  }
+
+  // устанавливаем значение по умолчанию в активность
+  if (localStorage.getItem('ratio')) {
+    ratio = localStorage.getItem('ratio');
+  } else {
+    ratio = 1.375;
+    localStorage.setItem('ratio', 'female');
+  }
+
+  function initLocalsettings(selector, activeClass) {
+    const elements = document.querySelectorAll(selector);
+
+    elements.forEach((elem) => {
+      elem.classList.remove(activeClass);
+      if (elem.getAttribute('id') === localStorage.getItem('sex')) {
+        elem.classList.add(activeClass);
+      }
+    });
+  }
 
   function calcTotal() {
     if (!sex || !height || !weight || !age || !ratio) {
@@ -609,9 +632,11 @@ window.addEventListener('DOMContentLoaded', () => {
         // то мы вытаскиваем эту активность
         if (e.target.getAttribute('data-ratio')) {
           ratio = e.target.getAttribute('data-ratio');
+          // поместить выбранную активность в localStorage
           localStorage.setItem('ratio', e.target.getAttribute('data-ratio'));
         } else {
           sex = e.target.getAttribute('id');
+          // поместить выбранную активность в localStorage
           localStorage.setItem('sex', e.target.getAttribute('id'));
         }
 
@@ -641,8 +666,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const input = document.querySelector(selector);
 
     input.addEventListener('input', () => {
-
-      if(input.value.match(/\D/g)) {
+      if (input.value.match(/\D/g)) {
         input.style.border = '1px solid red';
       } else {
         input.style.border = 'none';
