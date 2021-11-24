@@ -595,17 +595,28 @@ window.addEventListener('DOMContentLoaded', () => {
   function initLocalsettings(selector, activeClass) {
     const elements = document.querySelectorAll(selector);
 
+    // сначала удаляем всем эл-там класс активности, а потом
+    // добавляем при условии что этот атрибут есть в 
+    // localStorage
     elements.forEach((elem) => {
       elem.classList.remove(activeClass);
-      if (elem.getAttribute('id') === localStorage.getItem('sex')) {
-        elem.classList.add(activeClass);
-      }
+        if (elem.getAttribute('id') === localStorage.getItem('sex')) {
+          elem.classList.add(activeClass);
+        }
+        if (elem.getAttribute('data-ratio') === localStorage.getItem('ratio')) {
+          elem.classList.add(activeClass);
+        }
     });
   }
 
+  initLocalsettings('#gender div', 'calculating__choose-item_active');
+  initLocalsettings('.calculating__choose_big',
+  'calculating__choose-item_active');
+
   function calcTotal() {
+    // если какое либо из данных не введено то  предупреждаем пользователя
     if (!sex || !height || !weight || !age || !ratio) {
-      result.textContent = '____';
+      result.textContent = 'Введите все данные';
       return;
     }
 
@@ -622,9 +633,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
   calcTotal();
 
-  function getStaticInformation(parentSelector, activeClass) {
+  function getStaticInformation(selector, activeClass) {
     // получаем эл-ты внтури блока parentSelector
-    const elements = document.querySelectorAll(`${parentSelector} div`);
+    const elements = document.querySelectorAll(`${selector} div`);
 
     elements.forEach((elem) => {
       elem.addEventListener('click', (e) => {
@@ -654,7 +665,7 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 
   // 2 раза вызываем фунцию сначала для выбора пола а потом для выбора активности
-  getStaticInformation('#gender', 'calculating__choose-item_active');
+  getStaticInformation('#gender div', 'calculating__choose-item_active');
   getStaticInformation(
     '.calculating__choose_big',
     'calculating__choose-item_active'
