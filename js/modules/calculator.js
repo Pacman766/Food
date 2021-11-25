@@ -73,9 +73,9 @@ function calculator() {
         // если пользователь кликнул на какую то из активностей,
         // то мы вытаскиваем эту активность
         if (e.target.getAttribute('data-ratio')) {
-          ratio = e.target.getAttribute('data-ratio');
+          ratio = +e.target.getAttribute('data-ratio');
           // поместить выбранную активность в localStorage
-          localStorage.setItem('ratio', e.target.getAttribute('data-ratio'));
+          localStorage.setItem('ratio', +e.target.getAttribute('data-ratio'));
         } else {
           sex = e.target.getAttribute('id');
           // поместить выбранную активность в localStorage
@@ -98,7 +98,7 @@ function calculator() {
   // 2 раза вызываем фунцию сначала для выбора пола а потом для выбора активности
   getStaticInformation('#gender div', 'calculating__choose-item_active');
   getStaticInformation(
-    '.calculating__choose_big',
+    '.calculating__choose_big div',
     'calculating__choose-item_active'
   );
 
