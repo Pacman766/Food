@@ -1,52 +1,56 @@
-function modal() {
-  // Modal
+// ф-ция для закрытия модального окна
+function closeModal(modalSelector) {
+  const modal = document.querySelector(modalSelector);
 
-  const modalBtn = document.querySelectorAll('[data-modal]'), // кнопка открытия модал. окна
-    modal = document.querySelector('.modal'); // родитель модального окна
+  modal.classList.add('hide');
+  modal.classList.remove('show');
+  document.body.style.overflow = '';
+}
 
-  // ф-ция открытия модального окна
-  function openModal() {
-    modal.classList.add('show');
-    modal.classList.remove('hide');
-    document.body.style.overflow = 'hidden';
+// ф-ция открытия модального окна
+function openModal(modalSelector, modalTimerId) {
+  const modal = document.querySelector(modalSelector);
+  modal.classList.add('show');
+  modal.classList.remove('hide');
+  document.body.style.overflow = 'hidden';
+
+  if (modalTimerId) {
     clearInterval(modalTimerId);
   }
+}
+
+function modal(triggerSelector, modalSelector, modalTimerId) {
+  // Modal
+
+  const modalBtn = document.querySelectorAll(triggerSelector), // кнопка открытия модал. окна
+    modal = document.querySelector(modalSelector); // родитель модального окна
 
   // Вешаем обработчик событий на все кнопки modalBtn
   modalBtn.forEach((btn) => {
-    btn.addEventListener('click', openModal);
+    btn.addEventListener('click', () => openModal(modalSelector, modalTimerId));
   });
-
-  // ф-ция для закрытия модального окна
-  function closeModal() {
-    modal.classList.add('hide');
-    modal.classList.remove('show');
-    document.body.style.overflow = '';
-  }
 
   // обработчик события для закрытия окна при нажатии на пустую область экрана
   // или на крестик
   modal.addEventListener('click', (e) => {
     if (e.target === modal || e.target.getAttribute('data-close') == '') {
-      closeModal();
+      closeModal(modalSelector);
     }
   });
 
   // вешаем обработчик событий на закрытие при помощи кнопки Esc
   document.addEventListener('keydown', (e) => {
     if (e.code === 'Escape' && modal.classList.contains('show')) {
-      closeModal();
+      closeModal(modalSelector);
     }
   });
-
-  const modalTimerId = setTimeout(openModal, 50000);
 
   function showModalByScroll() {
     if (
       window.pageYOffset + document.documentElement.clientHeight >=
       document.documentElement.scrollHeight
     ) {
-      openModal();
+      openModal(modalSelector, modalTimerId);
       window.removeEventListener('scroll', showModalByScroll);
     }
   }
@@ -54,4 +58,6 @@ function modal() {
   window.addEventListener('scroll', showModalByScroll);
 }
 
-module.exports = modal;
+export default modal;
+export { closeModal };
+export { openModal };

@@ -1,7 +1,5 @@
-function timer() {
+function timer(id, deadline) {
   // Timer
-
-  const deadline = '2021-12-31';
 
   // Вычисляем оставшееся время с помощью вычитания из конечной даты
   // текущей даты, а также конвертируем миллисекунды в соотв единицы времени.
@@ -60,7 +58,7 @@ function timer() {
     }
   }
 
-  setClock('.timer', deadline);
+  setClock(id, deadline);
 }
 
-module.exports = timer;
+export default timer;

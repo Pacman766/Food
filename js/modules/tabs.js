@@ -1,9 +1,14 @@
-function tabs() {
+function tabs(
+  tabsSelector,
+  tabsContentSelector,
+  tabsParentSelector,
+  activeClass
+) {
   // Tabs
 
-  const tabs = document.querySelectorAll('.tabheader__item'), // табы
-    tabsContent = document.querySelectorAll('.tabcontent'), // картинки табов
-    tabsParent = document.querySelector('.tabheader__items'); // родитель табов
+  let tabs = document.querySelectorAll(tabsSelector), // табы
+    tabsContent = document.querySelectorAll(tabsContentSelector), // картинки табов
+    tabsParent = document.querySelector(tabsParentSelector); // родитель табов
 
   // ф-ция для скрытия табов. Для этого добавляем класс hide(css) и удаляем классы show, fade (css),
   // а также убираем класс активности tabheader__item_active
@@ -14,7 +19,7 @@ function tabs() {
     });
 
     tabs.forEach((item) => {
-      item.classList.remove('tabheader__item_active');
+      item.classList.remove(activeClass);
     });
   }
 
@@ -23,7 +28,7 @@ function tabs() {
   function showTabContent(i = 0) {
     tabsContent[i].classList.add('show', 'fade');
     tabsContent[i].classList.remove('hide');
-    tabs[i].classList.add('tabheader__item_active');
+    tabs[i].classList.add(activeClass);
   }
 
   hideTabContent();
@@ -34,7 +39,7 @@ function tabs() {
   tabsParent.addEventListener('click', (event) => {
     const target = event.target;
 
-    if (target && target.classList.contains('tabheader__item')) {
+    if (target && target.classList.contains(tabsSelector.slice(1))) {
       tabs.forEach((item, i) => {
         if (target == item) {
           hideTabContent();
@@ -45,4 +50,4 @@ function tabs() {
   });
 }
 
-module.exports = tabs;
+export default tabs;

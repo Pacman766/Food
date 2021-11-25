@@ -1,7 +1,10 @@
-function forms() {
+import { closeModal, openModal } from './modal';
+import {postData} from '../services/services';
+
+function forms(formSelector, modalTimerId) {
   // Forms (работа с сервером)
 
-  const forms = document.querySelectorAll('form');
+  const forms = document.querySelectorAll(formSelector);
 
   // сообщения завершения операции
   const message = {
@@ -14,20 +17,6 @@ function forms() {
   forms.forEach((item) => {
     bindPostData(item);
   });
-
-  // ф-ция отправки запроса на сервер, получение ответа с сервера в виде
-  // promise и далее возвращает и конвертирует в json
-  const postData = async (url, data) => {
-    const res = await fetch(url, {
-      method: 'POST', // каким образом
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: data, // что именно
-    });
-
-    return await res.json();
-  };
 
   // отправка данных пол-ля на сервер и ответ с сервера в виде
   // вспылвающего окна
@@ -73,7 +62,7 @@ function forms() {
 
     // скрываем prevModalDialog
     prevModalDialog.classList.add('hide');
-    openModal();
+    openModal('.modal', modalTimerId);
 
     // создаем модальное окно на основе существующего modal__dialog
     // вносим HTML и выводимое сообщение
@@ -98,4 +87,4 @@ function forms() {
   }
 }
 
-module.exports = forms;
+export default forms;
