@@ -339,7 +339,7 @@ function forms(formSelector, modalTimerId) {
       thanksModal.remove();
       prevModalDialog.classList.add('show');
       prevModalDialog.classList.remove('hide');
-      (0,_modal__WEBPACK_IMPORTED_MODULE_0__.closeModal)();
+      (0,_modal__WEBPACK_IMPORTED_MODULE_0__.closeModal)('.modal');
     }, 4000);
   }
 }
